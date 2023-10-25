@@ -11,6 +11,8 @@ class funciones:
         self.palabras_positivas = []
         self.palabras_negativas = []
 
+        self.fechas = []
+
     def cargar_archivo_mensajes(self, archivo):
         tree = ET.parse(archivo)
         root = tree.getroot()
@@ -22,6 +24,8 @@ class funciones:
 
             # print("Fecha:",self.extraer_fecha(fecha.text)[0])
             nueva_fecha = self.extraer_fecha(fecha.text)[0]
+
+            self.fechas.append(nueva_fecha)
 
             # print("Hashtags:", self.extraer_hashtags(texto.text))
             hashtags = self.extraer_hashtags(texto.text)
@@ -180,9 +184,52 @@ class funciones:
         
         return respuesta
 
+    def archivo_mensajes_salida(self):
+        data = ET.Element('MENSAJES_RECIBIDOS')
+        lista_fechas = list(set(self.fechas))
 
+        for fechas in lista_fechas:
+            cont_msg = 0
+            cont_usuarios = 0
+            cont_hashtags = 0
+            tiempo = ET.SubElement(data, 'TIEMPO')
+            fecha = ET.SubElement(tiempo, 'FECHA')
+            fecha.text = fechas
+            for mensajes in self.mensajes:
+                if mensajes.fecha == fechas:
+                    cont_msg += 1
+                    cont_usuarios += len(mensajes.usuarios)
+                    cont_hashtags += len(mensajes.hashtags)
+
+            msg = ET.SubElement(tiempo, 'MSJ_RECIBIDOS')
+            msg.text = str(cont_msg)
+            usr = ET.SubElement(tiempo, 'USR_MENCIONADOS')
+            usr.text = str(cont_usuarios)
+
+            hasht = ET.SubElement(tiempo, 'HASH_INCLUIDOS')
+            hasht.text = str(cont_hashtags)
+
+            prueba = ET.tostring(data)
+            
+        self.prettify_xml(data)
+        tree = ET.ElementTree(data)
+        tree.write("resumenMensajes.xml",encoding="UTF-8",xml_declaration=True)
+    
     
     def limpiar_datos(self):
         self.mensajes.clear()
         self.palabras_positivas.clear()
         self.palabras_negativas.clear()
+
+    def prettify_xml(self,element, indent='    '):
+        queue = [(0, element)]  # (level, element)
+        while queue:
+            level, element = queue.pop(0)
+            children = [(level + 1, child) for child in list(element)]
+            if children:
+                element.text = '\n' + indent * (level+1) 
+            if queue:
+                element.tail = '\n' + indent * queue[0][0]  
+            else:
+                element.tail = '\n' + indent * (level-1)  
+            queue[0:0] = children
