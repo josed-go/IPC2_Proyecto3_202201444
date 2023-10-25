@@ -11,6 +11,9 @@ class funciones:
         self.palabras_positivas = []
         self.palabras_negativas = []
 
+        self.palabras_posi_rechazadas = 0
+        self.palabras_nega_rechazadas = 0
+
         self.fechas = []
 
     def cargar_archivo_mensajes(self, archivo):
@@ -100,14 +103,14 @@ class funciones:
         for positivas in root.findall('./sentimientos_positivos/palabra'):
             self.palabras_positivas.append(positivas.text)
 
-        print(self.palabras_positivas)
 
         for negativas in root.findall('./sentimientos_negativos/palabra'):
             self.palabras_negativas.append(negativas.text)
 
-        print(self.palabras_negativas)
 
         self.archivo_palabras_salida()
+        print(self.palabras_positivas)
+        print(self.palabras_negativas)
 
     def consultar_hashtags(self, fecha_in, fecha_f):
         respuesta = {
@@ -220,15 +223,26 @@ class funciones:
         tree.write("resumenMensajes.xml",encoding="UTF-8",xml_declaration=True)
     
     def archivo_palabras_salida(self):
+        # self.palabras_positivas = list(set(self.palabras_positivas))
+        # self.palabras_negativas = list(set(self.palabras_negativas))
+
+        for i, posi in enumerate(self.palabras_positivas):
+            for num, nega in enumerate(self.palabras_negativas):
+                if posi == nega and i < num:
+                    self.palabras_posi_rechazadas += 1
+                elif posi == nega and i > num:
+                    self.palabras_nega_rechazadas += 1
+
+
         data = ET.Element('CONFIG_RECIBIDA')
         palabras_posi = ET.SubElement(data, 'PALABRAS_POSITIVAS')
         palabras_posi.text = str(len(self.palabras_positivas))
 
         palabras_posi_rechazadas = ET.SubElement(data, 'PALABRAS POSITIVAS RECHAZADAS')
-        palabras_posi_rechazadas.text = '0'
+        palabras_posi_rechazadas.text = str(self.palabras_posi_rechazadas)
 
         palabras_nega_rechazadas = ET.SubElement(data, 'PALABRAS NEGATIVAS RECHAZADAS')
-        palabras_nega_rechazadas.text = '0'
+        palabras_nega_rechazadas.text = str(self.palabras_nega_rechazadas)
 
         palabras_nega = ET.SubElement(data, 'PALABRAS_NEGATIVAS')
         palabras_nega.text = str(len(self.palabras_negativas))
