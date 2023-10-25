@@ -43,8 +43,10 @@ class funciones:
 
             self.mensajes.append(nuevo_mensaje)
 
-        for mensaje in self.mensajes:
-            print("Fecha:", mensaje.fecha, "Texto:", mensaje.texto, "Tipo:", mensaje.tipo, "Posi:", mensaje.cantidad_positivas, "Nega:", mensaje.cantidad_negativas, "Usuarios:", mensaje.usuarios, "Hashtags:", mensaje.hashtags)
+        self.archivo_mensajes_salida()
+
+        # for mensaje in self.mensajes:
+        #     print("Fecha:", mensaje.fecha, "Texto:", mensaje.texto, "Tipo:", mensaje.tipo, "Posi:", mensaje.cantidad_positivas, "Nega:", mensaje.cantidad_negativas, "Usuarios:", mensaje.usuarios, "Hashtags:", mensaje.hashtags)
 
 
     def extraer_fecha(self, texto):
@@ -104,6 +106,8 @@ class funciones:
             self.palabras_negativas.append(negativas.text)
 
         print(self.palabras_negativas)
+
+        self.archivo_palabras_salida()
 
     def consultar_hashtags(self, fecha_in, fecha_f):
         respuesta = {
@@ -215,6 +219,25 @@ class funciones:
         tree = ET.ElementTree(data)
         tree.write("resumenMensajes.xml",encoding="UTF-8",xml_declaration=True)
     
+    def archivo_palabras_salida(self):
+        data = ET.Element('CONFIG_RECIBIDA')
+        palabras_posi = ET.SubElement(data, 'PALABRAS_POSITIVAS')
+        palabras_posi.text = str(len(self.palabras_positivas))
+
+        palabras_posi_rechazadas = ET.SubElement(data, 'PALABRAS POSITIVAS RECHAZADAS')
+        palabras_posi_rechazadas.text = '0'
+
+        palabras_nega_rechazadas = ET.SubElement(data, 'PALABRAS NEGATIVAS RECHAZADAS')
+        palabras_nega_rechazadas.text = '0'
+
+        palabras_nega = ET.SubElement(data, 'PALABRAS_NEGATIVAS')
+        palabras_nega.text = str(len(self.palabras_negativas))
+
+        prueba = ET.tostring(data)
+            
+        self.prettify_xml(data)
+        tree = ET.ElementTree(data)
+        tree.write("resumenConfig.xml",encoding="UTF-8",xml_declaration=True)
     
     def limpiar_datos(self):
         self.mensajes.clear()

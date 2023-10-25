@@ -86,13 +86,13 @@ def obtener_sentimientos():
         'respuesta': respuesta
     })
 
-@app.route("/crearArchivoSalidaMensajes", methods = ['POST'])
-def crear_archivo_mensajes():
-    func.archivo_mensajes_salida()
+# @app.route("/crearArchivoSalidaMensajes", methods = ['POST'])
+# def crear_archivo_mensajes():
+#     func.archivo_mensajes_salida()
 
-    return jsonify({
-        'message': 'Archivo creado con exito'
-    })
+#     return jsonify({
+#         'message': 'Archivo creado con exito'
+#     })
 
 if __name__ == '__main__':
     app.run(threaded = True, port = 5000, debug = True)
