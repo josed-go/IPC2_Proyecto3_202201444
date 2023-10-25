@@ -8,7 +8,7 @@ CORS(app)
 
 func = funciones()
 
-@app.route('/subir-archivo-mensajes', methods=['POST'])
+@app.route('/grabarMensajes', methods=['POST'])
 def subir_archivo_mensajes():
     if 'file' not in request.files:
         return jsonify({
@@ -25,7 +25,7 @@ def subir_archivo_mensajes():
         'message': 'Archivo cargado correctamente.'
     })
 
-@app.route('/subir-archivo-diccionario', methods=['POST'])
+@app.route('/grabarConfiguracion', methods=['POST'])
 def subir_archivo_diccionario():
     if 'file' not in request.files:
         return jsonify({
@@ -40,6 +40,18 @@ def subir_archivo_diccionario():
 
     return jsonify({
         'message': 'Archivo cargado correctamente.'
+    })
+
+@app.route("/devolverHashtags", methods = ['GET'])
+def obtener_hashtags():
+    fecha_in = request.form.get('fecha_in')
+    fecha_fin = request.form.get('fecha_fin')
+    respuesta = func.consultar_hashtags(fecha_in, fecha_fin)
+
+    return jsonify({
+        'fecha_inicio': fecha_in,
+        'fecha_fin': fecha_fin,
+        'hashtags': respuesta
     })
 
 if __name__ == '__main__':
