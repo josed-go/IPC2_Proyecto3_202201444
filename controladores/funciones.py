@@ -125,7 +125,29 @@ class funciones:
             for hashtag in hashtags_unicos:
                 respuesta[hashtag] = lista_temp.count(hashtag)
 
-        print(hashtags_unicos)
+        # print(respuesta)
 
         return respuesta
+    
+    def consultar_menciones(self, fecha_in, fecha_f):
+        respuesta = {
+            'No hay menciones en esta fecha'
+        }
+        lista_temp = []
+        date_format = '%d/%m/%Y'
+        fecha_inicio = datetime.strptime(fecha_in, date_format)
+        fecha_fin = datetime.strptime(fecha_f, date_format)
+
+        for mensaje in self.mensajes:
+            fecha = datetime.strptime(mensaje.fecha, date_format)
+            if (fecha >= fecha_inicio) and (fecha <= fecha_fin):
+                lista_temp += mensaje.usuarios
+
+        if len(lista_temp) > 0:
+            respuesta = {}
+            menciones_unicas = list(set(lista_temp))
+
+            for mencion in menciones_unicas:
+                respuesta[mencion] = lista_temp.count(mencion)
         
+        return respuesta

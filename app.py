@@ -54,5 +54,17 @@ def obtener_hashtags():
         'hashtags': respuesta
     })
 
+@app.route("/devolverMenciones", methods = ['GET'])
+def obtener_menciones():
+    fecha_in = request.form.get('fecha_in')
+    fecha_fin = request.form.get('fecha_fin')
+    respuesta = func.consultar_menciones(fecha_in, fecha_fin)
+
+    return jsonify({
+        'fecha_inicio': fecha_in,
+        'fecha_fin': fecha_fin,
+        'menciones': respuesta
+    })
+
 if __name__ == '__main__':
     app.run(threaded = True, port = 5000, debug = True)
