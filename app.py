@@ -66,5 +66,14 @@ def obtener_menciones():
         'menciones': respuesta
     })
 
+@app.route("/limpiarDatos", methods = ['POST'])
+def limpiar_datos():
+    func.limpiar_datos()
+
+    return jsonify({
+        'message': 'Datos limpiados correctamente'
+    })
+
+
 if __name__ == '__main__':
     app.run(threaded = True, port = 5000, debug = True)

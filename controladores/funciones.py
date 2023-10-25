@@ -151,3 +151,8 @@ class funciones:
                 respuesta[mencion] = lista_temp.count(mencion)
         
         return respuesta
+    
+    def limpiar_datos(self):
+        self.mensajes.clear()
+        self.palabras_positivas.clear()
+        self.palabras_negativas.clear()
