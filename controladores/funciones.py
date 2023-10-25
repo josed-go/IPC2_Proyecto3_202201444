@@ -101,11 +101,13 @@ class funciones:
         root = tree.getroot()
 
         for positivas in root.findall('./sentimientos_positivos/palabra'):
-            self.palabras_positivas.append(positivas.text)
+            if positivas.text not in self.palabras_positivas:
+                self.palabras_positivas.append(positivas.text)
 
 
         for negativas in root.findall('./sentimientos_negativos/palabra'):
-            self.palabras_negativas.append(negativas.text)
+            if negativas.text not in self.palabras_negativas:
+                self.palabras_negativas.append(negativas.text)
 
 
         self.archivo_palabras_salida()
@@ -229,8 +231,12 @@ class funciones:
         for i, posi in enumerate(self.palabras_positivas):
             for num, nega in enumerate(self.palabras_negativas):
                 if posi == nega and i < num:
+                    self.palabras_negativas.remove(nega)
+                    self.palabras_positivas.remove(posi)
                     self.palabras_posi_rechazadas += 1
                 elif posi == nega and i > num:
+                    self.palabras_negativas.remove(nega)
+                    self.palabras_positivas.remove(posi)
                     self.palabras_nega_rechazadas += 1
 
 
@@ -257,6 +263,11 @@ class funciones:
         self.mensajes.clear()
         self.palabras_positivas.clear()
         self.palabras_negativas.clear()
+        self.palabras_posi_rechazadas = 0
+        self.palabras_nega_rechazadas = 0
+
+        self.fechas.clear()
+
 
     def prettify_xml(self,element, indent='    '):
         queue = [(0, element)]  # (level, element)
