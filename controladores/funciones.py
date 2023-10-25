@@ -152,6 +152,36 @@ class funciones:
         
         return respuesta
     
+    def consultar_sentimientos(self, fecha_in, fecha_f):
+        cantidad_posi = 0
+        cantidad_nega = 0
+        cantidad_neu = 0
+
+        lista_temp = []
+        date_format = '%d/%m/%Y'
+        fecha_inicio = datetime.strptime(fecha_in, date_format)
+        fecha_fin = datetime.strptime(fecha_f, date_format)
+
+        for mensaje in self.mensajes:
+            fecha = datetime.strptime(mensaje.fecha, date_format)
+            if (fecha >= fecha_inicio) and (fecha <= fecha_fin):
+                if mensaje.tipo == 'Positivo':
+                    cantidad_posi += 1
+                elif mensaje.tipo == 'Negativo':
+                    cantidad_nega += 1
+                elif mensaje.tipo == 'Neutro':
+                    cantidad_neu += 1
+        
+        respuesta = {
+            'Mensajes_positivos': cantidad_posi,
+            'Mensajes_negativos': cantidad_nega,
+            'Mensajes_nuetros': cantidad_neu
+        }
+        
+        return respuesta
+
+
+    
     def limpiar_datos(self):
         self.mensajes.clear()
         self.palabras_positivas.clear()

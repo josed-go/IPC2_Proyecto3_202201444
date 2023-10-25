@@ -74,6 +74,18 @@ def limpiar_datos():
         'message': 'Datos limpiados correctamente'
     })
 
+@app.route("/devolverSentimientos", methods = ['GET'])
+def obtener_sentimientos():
+    fecha_in = request.form.get('fecha_in')
+    fecha_fin = request.form.get('fecha_fin')
+    respuesta = func.consultar_sentimientos(fecha_in, fecha_fin)
+
+    return jsonify({
+        'fecha_inicio': fecha_in,
+        'fecha_fin': fecha_fin,
+        'respuesta': respuesta
+    })
+
 
 if __name__ == '__main__':
     app.run(threaded = True, port = 5000, debug = True)
