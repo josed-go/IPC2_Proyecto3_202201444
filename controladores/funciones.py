@@ -28,7 +28,8 @@ class funciones:
             # print("Fecha:",self.extraer_fecha(fecha.text)[0])
             nueva_fecha = self.extraer_fecha(fecha.text)[0]
 
-            self.fechas.append(nueva_fecha)
+            if nueva_fecha not in self.fechas:
+                self.fechas.append(nueva_fecha)
 
             # print("Hashtags:", self.extraer_hashtags(texto.text))
             hashtags = self.extraer_hashtags(texto.text)
@@ -204,9 +205,9 @@ class funciones:
 
     def archivo_mensajes_salida(self):
         data = ET.Element('MENSAJES_RECIBIDOS')
-        lista_fechas = list(set(self.fechas))
+        # lista_fechas = list(set(self.fechas))
 
-        for fechas in lista_fechas:
+        for fechas in self.fechas:
             cont_msg = 0
             cont_usuarios = 0
             cont_hashtags = 0
