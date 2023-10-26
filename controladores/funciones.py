@@ -48,6 +48,7 @@ class funciones:
             self.mensajes.append(nuevo_mensaje)
 
         self.archivo_mensajes_salida()
+        self.db_simulada()
 
         # for mensaje in self.mensajes:
         #     print("Fecha:", mensaje.fecha, "Texto:", mensaje.texto, "Tipo:", mensaje.tipo, "Posi:", mensaje.cantidad_positivas, "Nega:", mensaje.cantidad_negativas, "Usuarios:", mensaje.usuarios, "Hashtags:", mensaje.hashtags)
@@ -269,6 +270,44 @@ class funciones:
         tree = ET.ElementTree(data)
         tree.write("resumenConfig.xml",encoding="UTF-8",xml_declaration=True)
     
+    def db_simulada(self):
+        data = ET.Element('MENSAJES')
+
+        for mensajes in self.mensajes:
+            mensaje = ET.SubElement(data, 'MENSAJE')
+            fecha = ET.SubElement(mensaje, 'FECHA')
+            fecha.text = mensajes.fecha
+
+            texto = ET.SubElement(mensaje, 'TEXTO')
+            texto.text = mensajes.texto
+
+            user_mencionados = ET.SubElement(mensaje, 'USUARIOS_MENCIONADOS')
+
+            for usuarios in mensajes.usuarios:
+                usuario = ET.SubElement(user_mencionados, 'USUARIO')
+                usuario.text = usuarios
+
+            hash_mencionados = ET.SubElement(mensaje, 'HASHTAGS_MENCIONADOS')
+
+            for hashtags in mensajes.hashtags:
+                hashtag = ET.SubElement(hash_mencionados, 'HASHTAG')
+                hashtag.text = hashtags
+
+            tipo = ET.SubElement(mensaje, 'TIPO_MENSAJE')
+            tipo.text = mensajes.tipo
+
+            cantidad_posi = ET.SubElement(mensaje, 'CANT_PALABRAS_POSITIVAS')
+            cantidad_posi.text = str(mensajes.cantidad_positivas)
+
+            cantidad_nega = ET.SubElement(mensaje, 'CANT_PALABRAS_NEGATIVAS')
+            cantidad_nega.text = str(mensajes.cantidad_negativas)
+
+            prueba = ET.tostring(data)
+            
+        self.prettify_xml(data)
+        tree = ET.ElementTree(data)
+        tree.write("db_simulada.xml",encoding="UTF-8",xml_declaration=True)
+
     def limpiar_datos(self):
         self.mensajes.clear()
         self.palabras_positivas.clear()
