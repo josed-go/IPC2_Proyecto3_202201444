@@ -36,7 +36,7 @@ class funciones:
             # print("Usuarios:", self.extrar_usuarios(texto.text))
             usuarios = self.extrar_usuarios(texto.text)
 
-            cantidad_posi, cantidad_nega, tipo = self.calcular_palabras(texto.text)
+            cantidad_posi, cantidad_nega, tipo = self.calcular_palabras(texto.text.lower())
 
             # print("Positivas:", cantidad_posi, "Negativas:", cantidad_nega, "Tipo:", tipo)
 
@@ -76,14 +76,21 @@ class funciones:
         cantidad_negativas = 0
         tipo = 'Neutro'
 
+        texto = re.sub(r"[^\w\s]", "", texto)
+
+        texto_nuevo = texto.split()
+        print(texto_nuevo)
+
         # PALABRAS POSITIVAS 
         for palabra in self.palabras_positivas:
-            if palabra.lower() in texto.lower():
+            if palabra.lower() in texto_nuevo:
+                print("posi", palabra)
                 cantidad_positivas += 1
 
         # PALABRAS NEGATIVAS
         for palabra in self.palabras_negativas:
-            if palabra.lower() in texto.lower():
+            if palabra.lower() in texto_nuevo:
+                print("nega", palabra)
                 cantidad_negativas += 1
 
         # Tipo
