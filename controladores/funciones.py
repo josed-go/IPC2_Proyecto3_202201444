@@ -74,9 +74,9 @@ class funciones:
     def calcular_palabras(self, texto):
         cantidad_positivas = 0
         cantidad_negativas = 0
-        tipo = 'Neutro'
+        tipo = ''
 
-        texto = re.sub(r"[^\w\s]", "", texto)
+        texto = re.sub(r'[.|,|"|;|;|¡|!|?|¿|%|&|$]', "", texto)
 
         texto_nuevo = texto.split()
         print(texto_nuevo)
@@ -99,6 +99,8 @@ class funciones:
             tipo = 'Positivo'
         elif cantidad_negativas > cantidad_positivas:
             tipo = 'Negativo'
+        elif cantidad_positivas == cantidad_negativas:
+            tipo = 'Neutro'
 
         return cantidad_positivas, cantidad_negativas, tipo
 
