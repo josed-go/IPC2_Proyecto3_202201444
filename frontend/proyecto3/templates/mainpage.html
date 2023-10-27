@@ -1,0 +1,127 @@
+{% extends "main.html" %}
+{% load static %}
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block css %}
+    <link rel="stylesheet" href="{% static './css/styles.css' %}">
+    {% endblock %}
+    <title>Proyecto 3</title>
+</head>
+<body> -->
+    {% block content %}
+    <h1>Subir archivos de entrada</h1>
+    <div class="container">
+
+        <!-- <div class="form"> -->
+    
+            <form class="form" method="POST" id="fileconfigform" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="label-form">Archivo de configuracion</label>
+                <div id="file-upload1" class="file-upload">
+                    <div class="file-select">
+                        <div class="file-select-button" id="fileName1">Elegir archivo</div>
+                        <div class="file-select-name" id="noFile1">No hay ningun archivo...</div> 
+                        <input type="file" id="configfile" name="file" accept=".xml" />
+                    </div>
+                </div>
+                <!-- <input type="file" id="configfile" name="file" accept=".xml" /> -->
+                <button class="btnfile" type="button" id="submitbtn1">Subir diccionario</button>
+            </form>
+        <!-- </div> -->
+        <!-- <div class="form"> -->
+    
+            <form class="form" method="POST" id="filemsgform" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="label-form">Archivo de mensajes</label>
+                <div id="file-upload2" class="file-upload">
+                    <div class="file-select">
+                        <div class="file-select-button" id="fileName">Elegir archivo</div>
+                        <div class="file-select-name" id="noFile">No hay ningun archivo...</div> 
+                        <input type="file" id="msgfile" name="file" accept=".xml" />
+                    </div>
+                </div>
+                <!-- <input type="file" id="msgfile" name="file" accept=".xml" /> -->
+                <button class="btnfile" type="button" id="submitbtn2">Subir mensajes</button>
+            </form>
+        <!-- </div> -->
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $('#configfile').bind('change', function () {
+            var filename = $("#configfile").val();
+            if (/^\s*$/.test(filename)) {
+                $("#file-upload1").removeClass('active');
+                $("#noFile1").text("No file chosen..."); 
+            }
+            else {
+                $("#file-upload1").addClass('active');
+                $("#noFile1").text(filename.replace("C:\\fakepath\\", "")); 
+            }
+        });
+        $('#msgfile').bind('change', function () {
+            var filename = $("#msgfile").val();
+            if (/^\s*$/.test(filename)) {
+                $("#file-upload2").removeClass('active');
+                $("#noFile").text("No file chosen..."); 
+            }
+            else {
+                $("#file-upload2").addClass('active');
+                $("#noFile").text(filename.replace("C:\\fakepath\\", "")); 
+            }
+        });
+        $(document).ready(() => {
+            $("#submitbtn1").click((e) => {
+                e.preventDefault()
+                var form = new FormData()
+                form.append('data', $("#inputData").val())
+                form.append('file', $("#configfile")[0].files[0])
+                var csrfToken = $("input[name = 'csrfmiddlewaretoken']").val()
+                form.append('csrfmiddlewaretoken', csrfToken)
+                $.ajax({
+                    type: "POST",
+                    url: "http://127.0.0.1:5000/grabarConfiguracion",
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    success: (response) => {
+                        alert(response.message)
+                    },
+                    error: (xhr, status, error) => {
+                        alert("Error: " + error)
+                    }
+                })
+            })
+
+            $("#submitbtn2").click((e) => {
+                e.preventDefault()
+                var form = new FormData()
+                form.append('data', $("#inputData").val())
+                form.append('file', $("#msgfile")[0].files[0])
+                var csrfToken = $("input[name = 'csrfmiddlewaretoken']").val()
+                form.append('csrfmiddlewaretoken', csrfToken)
+                $.ajax({
+                    type: "POST",
+                    url: "http://127.0.0.1:5000/grabarMensajes",
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    success: (response) => {
+                        alert(response.message)
+                    },
+                    error: (xhr, status, error) => {
+                        alert("Error: " + error)
+                    }
+                })
+            })
+
+
+        })
+
+    </script>
+    {% endblock %}
+<!-- </body>
+</html> -->
