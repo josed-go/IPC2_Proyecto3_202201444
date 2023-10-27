@@ -3,6 +3,15 @@ body {
     font-family: "JetBrains Mono", monospace;
 }
 
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
 .navbar {
     width: 100%;
     display: flex;
@@ -10,6 +19,19 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.btninicializar {
+    font-size: large;
+    padding: 10px;
+    width: 5%;
+    border-radius: 10px;
+    border: 2px solid #4682A9;
+    background-color: #91C8E4;
+    cursor: pointer;
+    margin-right: 25px;
+    margin-top: 25px;
+}
+
 
 /* .main-nav {
     display: flex;

@@ -316,6 +316,7 @@ class funciones:
         self.palabras_nega_rechazadas = 0
 
         self.fechas.clear()
+        print("Sistema inicializado")
 
 
     def prettify_xml(self,element, indent='    '):

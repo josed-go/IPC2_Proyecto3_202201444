@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block css %}
-    <link rel="stylesheet" href="{% static './css/styles.css' %}">
-    {% endblock %}
+
     <title>Main - Proyecto 3</title>
+    <link rel="stylesheet" href="{% static './css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +31,7 @@
                 <a id="ayuda-link" class="{% if request.path == '/proyecto3/ayuda' %}active{% endif %}" href="{% url 'Ayuda' %}">Ayuda</a>
             </div>
         </nav>
+        <button id="btnini" class="btninicializar">Inicializar sistema</button>
     </header>
 
     {% block content %}
@@ -43,5 +43,30 @@
         <a class="a-footer" href="https://github.com/josed-go" target="_blank"><i class="fa fa-github icono" style="font-size:24px"></i></a>
         <a class="a-footer" href="https://github.com/josed-go" target="_blank">josed-go</a>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $("#btnini").click((e) => {
+                e.preventDefault()
+                var form = new FormData()
+                var csrfToken = $("input[name = 'csrfmiddlewaretoken']").val()
+                form.append('csrfmiddlewaretoken', csrfToken)
+                $.ajax({
+                    type: "POST",
+                    url: "http://127.0.0.1:5000/limpiarDatos",
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    success: (response) => {
+                        alert(response.message)
+                    },
+                    error: (xhr, status, error) => {
+                        alert("Error: " + error)
+                    }
+                })
+            })
+
+        })
+    </script>
 </body>
 </html>
