@@ -1,0 +1,94 @@
+{% extends "main.html" %}
+{% load static %}
+{% block content %}
+<h1>Obtener sentimientos</h1>
+<div class="divmenciones">
+
+    <div class="container-menciones">
+        <div class="container">
+            <div>
+                <form method="POST" id="fileconfigform" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label class="lblDate">Fecha de inicio:</label>
+                    <input type="date" class="iptdate" id="fechain" name="fechain"/>
+                </form>
+            </div>
+            <div>
+                <form method="POST" id="fileconfigform" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label class="lblDate">Fecha final:</label>
+                    <input type="date" class="iptdate" id="fechafin" name="fechafin"/>
+                </form>
+            </div>
+        </div>
+        <button id="btnsentimientos" class="btnfile">Buscar</button>
+    </div>
+    <div id="div-menciones">
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(() => {
+        $("#btnsentimientos").click((e) => {
+            e.preventDefault()
+            var form = new FormData()
+            var datein = new Date($("#fechain").val())
+            var diain = datein.getUTCDate();
+            var mesin = datein.getUTCMonth() + 1;
+            var anioin = datein.getUTCFullYear();
+            var fechain = [diain, mesin, anioin].join('/')
+            var datefin = new Date($("#fechafin").val())
+            var diafin = datefin.getUTCDate();
+            var mesfin = datefin.getUTCMonth() + 1;
+            var aniofin = datefin.getUTCFullYear();
+            var fechafin = [diafin, mesfin, aniofin].join('/')
+            form.append('data', $("#inputData").val())
+            form.append('fecha_in', fechain)
+            form.append('fecha_fin', fechafin)
+            var csrfToken = $("input[name = 'csrfmiddlewaretoken']").val()
+            form.append('csrfmiddlewaretoken', csrfToken)
+
+            $.ajax({
+                type: "POST",
+                url: "",
+                data: form,
+                processData: false,
+                contentType: false,
+                success: (response) => {
+                    var texto = ""
+                    var respuesta = response.respuesta
+                    var div = $("#div-menciones")
+                    div.empty()
+                    div.addClass("sentimientos")
+                    for (var key in respuesta) {
+                        var divmencion = document.createElement("div")
+                        divmencion.classList.add("mencion")
+                        var tipo = document.createElement("p")
+                        tipo.classList.add("usuario")
+                        tipo.textContent = key+":"
+
+                        var mensajes = document.createElement("p")
+                        mensajes.classList.add("mensajes-user")
+                        mensajes.textContent = respuesta[key] + " mensajes"
+                        // texto = texto + "@" + key + " "+ menciones[key] + "\n"
+                        divmencion.append(tipo)
+                        divmencion.append(mensajes)
+                        div.append(divmencion)
+                    }
+                    // alert("Fechain: " + fechain + " | Fechafin: "+fechafin +"\n"+response.menciones)
+                    // alert(texto)
+                
+                },
+                error: (xhr, status, error) => {
+                    alert("Error: " + error)
+                }
+            })
+
+
+        })
+
+
+    })
+</script>
+{% endblock %}

@@ -72,5 +72,29 @@ def hashtags_view(request):
 
     return render(request, 'hashtags.html', {"hashtags": hashtags})
 
+def sentimientos_view(request):
+    sentimientos = {}
+
+    if request.method == 'POST':
+        data = request.POST.get("data")
+        url = request.POST.get("url")
+        fecha_in = request.POST.get("fecha_in")
+        fecha_fin = request.POST.get("fecha_fin")
+
+        try :
+            response = requests.post("http://127.0.0.1:5000/devolverSentimientos", data={"fecha_in": fecha_in, "fecha_fin": fecha_fin},)
+            response.raise_for_status()
+            # menciones = response.menciones
+            # print(menciones)
+            response_data = response.json()
+            sentimientos = response_data["respuesta"]
+
+            print("sentimientos:",sentimientos)
+            return JsonResponse(response_data)
+        except requests.exceptions.RequestException as e:
+            return HttpResponse(str(e), status=500)
+        
+    return render(request, 'sentimientos.html', {"sentimientos": sentimientos})
+
 def ayuda(request):
     return render(request, 'ayuda.html')

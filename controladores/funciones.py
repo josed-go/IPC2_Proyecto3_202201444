@@ -199,9 +199,9 @@ class funciones:
                     cantidad_neu += 1
         
         respuesta = {
-            'Mensajes_positivos': cantidad_posi,
-            'Mensajes_negativos': cantidad_nega,
-            'Mensajes_nuetros': cantidad_neu
+            'Mensajes con sentimientos positivos': cantidad_posi,
+            'Mensajes con sentimientos negativos': cantidad_nega,
+            'Mensajes nuetros': cantidad_neu
         }
         
         return respuesta

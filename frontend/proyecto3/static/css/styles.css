@@ -331,7 +331,7 @@ file-upload {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid #9b9b9b; */
+    border-bottom: 1px solid #9b9b9b;
     gap: 5px;
 
     .contador {
@@ -358,6 +358,27 @@ file-upload {
 }
 
 .menciones::-webkit-scrollbar-thumb {
+    background: #4682A9;
+    border-radius: 0 10px 10px 0;
+}
+
+.sentimientos {
+    margin-top: 50px;
+    width: 40%;
+    background-color: #fff;
+    border: 1px solid #9b9b9b;
+    text-align: center;
+    max-height: 497px;
+    overflow-y: auto;
+}
+
+.sentimientos::-webkit-scrollbar {
+    width: 8px;
+    background: #91C8E4;
+    border-radius: 0 0 10px 0;
+}
+
+.sentimientos::-webkit-scrollbar-thumb {
     background: #4682A9;
     border-radius: 0 10px 10px 0;
 }

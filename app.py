@@ -80,7 +80,7 @@ def limpiar_datos():
         'message': 'Datos limpiados correctamente'
     })
 
-@app.route("/devolverSentimientos", methods = ['GET'])
+@app.route("/devolverSentimientos", methods = ['POST'])
 def obtener_sentimientos():
     fecha_in = request.form.get('fecha_in')
     fecha_fin = request.form.get('fecha_fin')
