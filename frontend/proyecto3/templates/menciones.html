@@ -3,32 +3,40 @@
 {% block content %}
 
 <h1>Obtener menciones</h1>
-<div class="divmenciones">
+<div class="max-container">
 
-    <div class="container-menciones">
-        <div class="container">
-            <div>
-                <form method="POST" id="fileconfigform" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <label class="lblDate">Fecha de inicio:</label>
-                    <input type="date" class="iptdate" id="fechain" name="fechain"/>
-                </form>
+    <div class="divmenciones">
+    
+        <div class="container-menciones">
+            <div class="container">
+                <div>
+                    <form method="POST" id="fileconfigform" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label class="lblDate">Fecha de inicio:</label>
+                        <input type="date" class="iptdate" id="fechain" name="fechain"/>
+                    </form>
+                </div>
+                <div>
+                    <form method="POST" id="fileconfigform" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label class="lblDate">Fecha final:</label>
+                        <input type="date" class="iptdate" id="fechafin" name="fechafin"/>
+                    </form>
+                </div>
             </div>
-            <div>
-                <form method="POST" id="fileconfigform" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <label class="lblDate">Fecha final:</label>
-                    <input type="date" class="iptdate" id="fechafin" name="fechafin"/>
-                </form>
-            </div>
+            <button id="btnmenciones" class="btnfile">Buscar</button>
         </div>
-        <button id="btnmenciones" class="btnfile">Buscar</button>
+        <div id="div-menciones">
+            <!-- <div class="mencion"><p class="contador">1</p><p class="usuario">@Lolo:</p><p class="mensajes-user">1 mensajes</p></div>
+            <div class="mencion"><p class="contador">2</p><p class="usuario">@estudiante03:</p><p class="mensajes-user">2 mensajes</p></div> -->
+        </div>
     </div>
-    <div id="div-menciones">
-
+    <div id="chart">
+        
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     $(document).ready(() => {
         $("#btnmenciones").click((e) => {
@@ -57,12 +65,18 @@
                 processData: false,
                 contentType: false,
                 success: (response) => {
+                    var usuarios = []
+                    var datos = []
                     var cont = 1
                     var texto = ""
                     var menciones = response.menciones
                     var div = $("#div-menciones")
+                    var divchart = $("#chart")
+                    divchart.empty()
                     div.empty()
                     div.addClass("menciones")
+                    usuarios = []
+                    datos = []
                     for (var key in menciones) {
                         var divmencion = document.createElement("div")
                         divmencion.classList.add("mencion")
@@ -72,10 +86,12 @@
                         var mencion = document.createElement("p")
                         mencion.classList.add("usuario")
                         mencion.textContent = "@" + key +":"
+                        usuarios.push(key)
 
                         var mensajesmencion = document.createElement("p")
                         mensajesmencion.classList.add("mensajes-user")
                         mensajesmencion.textContent = menciones[key] + " mensajes"
+                        datos.push(menciones[key])
                         // texto = texto + "@" + key + " "+ menciones[key] + "\n"
                         divmencion.append(contador)
                         divmencion.append(mencion)
@@ -83,6 +99,22 @@
                         div.append(divmencion)
                         cont = cont + 1
                     }
+
+                    
+                    ApexCharts.exec('chart1', "updateOptions", {
+                        xaxis: {
+                        categories: usuarios
+                        },
+                        title: {
+                            text: 'Menciones '+fechain +" a "+fechafin
+                        }
+                    });
+
+                    ApexCharts.exec('chart1', "updateSeries", [
+                        {
+                        data: datos
+                        }
+                    ]);
                     // alert("Fechain: " + fechain + " | Fechafin: "+fechafin +"\n"+response.menciones)
                     // alert(texto)
                 
@@ -94,7 +126,91 @@
 
 
         })
+        var options = {
+            series: [{
+                name: 'Menciones',
+                data: []
+            }],
+            chart: {
+                id: 'chart1',
+                height: 350,
+                type: 'bar',
+            },
+            plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                position: 'top', // top, center, bottom
+                },
+            }
+            },
+            dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return val;
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+            },
+            
+            xaxis: {
+            categories: [],
+            position: 'top',
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false
+            },
+            crosshairs: {
+                fill: {
+                type: 'gradient',
+                gradient: {
+                    colorFrom: '#D8E3F0',
+                    colorTo: '#BED1E6',
+                    stops: [0, 100],
+                    opacityFrom: 0.4,
+                    opacityTo: 0.5,
+                }
+                }
+            },
+            tooltip: {
+                enabled: true,
+            }
+            },
+            yaxis: {
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+                formatter: function (val) {
+                return val;
+                }
+            }
+            
+            },
+            title: {
+            text: 'Menciones',
+            floating: true,
+            offsetY: 330,
+            align: 'center',
+            style: {
+                color: '#444'
+            }
+            }
+        };
 
+        
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        
+        chart.render();
 
     })
 </script>

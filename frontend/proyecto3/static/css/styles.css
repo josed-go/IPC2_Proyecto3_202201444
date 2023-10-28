@@ -293,6 +293,7 @@ file-upload {
 }
 
 .divmenciones {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -318,7 +319,7 @@ file-upload {
 
 .menciones {
     margin-top: 50px;
-    width: 25%;
+    width: 50%;
     background-color: #fff;
     border: 1px solid #9b9b9b;
     text-align: center;
@@ -327,6 +328,7 @@ file-upload {
 }
 
 .mencion {
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -381,4 +383,19 @@ file-upload {
 .sentimientos::-webkit-scrollbar-thumb {
     background: #4682A9;
     border-radius: 0 10px 10px 0;
+}
+
+.max-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+#chart {
+    width: 80%;
+    margin-right: 70px;
+    background-color: #fff;
 }

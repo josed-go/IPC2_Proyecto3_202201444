@@ -6,6 +6,5 @@ urlpatterns = [
     path('menciones', views.menciones_view, name = 'Menciones'),
     path('hashtags', views.hashtags_view, name = 'Hashtags'),
     path('sentimientos', views.sentimientos_view, name = 'Sentimientos'),
-    path('graficas', views.mainpage_view, name = 'Graficas'),
     path('ayuda', views.ayuda, name = 'Ayuda'),
 ]

@@ -96,5 +96,8 @@ def sentimientos_view(request):
         
     return render(request, 'sentimientos.html', {"sentimientos": sentimientos})
 
+def graficas_view(request):
+    return render(request, 'graficas.html')
+
 def ayuda(request):
     return render(request, 'ayuda.html')
