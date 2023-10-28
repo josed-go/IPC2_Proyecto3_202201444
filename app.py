@@ -42,7 +42,7 @@ def subir_archivo_diccionario():
         'message': 'Archivo cargado correctamente.'
     })
 
-@app.route("/devolverHashtags", methods = ['GET'])
+@app.route("/devolverHashtags", methods = ['POST'])
 def obtener_hashtags():
     fecha_in = request.form.get('fecha_in')
     fecha_fin = request.form.get('fecha_fin')
