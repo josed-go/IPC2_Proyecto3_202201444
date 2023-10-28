@@ -46,6 +46,7 @@ def subir_archivo_diccionario():
 def obtener_hashtags():
     fecha_in = request.form.get('fecha_in')
     fecha_fin = request.form.get('fecha_fin')
+    
     respuesta = func.consultar_hashtags(fecha_in, fecha_fin)
 
     return jsonify({
@@ -54,10 +55,15 @@ def obtener_hashtags():
         'hashtags': respuesta
     })
 
-@app.route("/devolverMenciones", methods = ['GET'])
+@app.route("/devolverMenciones", methods = ['POST'])
 def obtener_menciones():
+
     fecha_in = request.form.get('fecha_in')
     fecha_fin = request.form.get('fecha_fin')
+    if fecha_in == None and fecha_fin == None:
+        return jsonify({
+            'message': 'Debe seleccionar una fecha'
+    })
     respuesta = func.consultar_menciones(fecha_in, fecha_fin)
 
     return jsonify({

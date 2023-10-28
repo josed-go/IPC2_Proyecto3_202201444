@@ -32,6 +32,12 @@ header {
     margin-top: 25px;
 }
 
+.btninicializar:hover {
+    background-color: #4682A9;
+    color: #fff;
+    border: 2px solid #F6F4EB;
+    transform: scale(1.1);
+}
 
 /* .main-nav {
     display: flex;
@@ -128,6 +134,13 @@ h1 {
     border: 2px solid #4682A9;
     background-color: #91C8E4;
     cursor: pointer;
+}
+
+.btnfile:hover {
+    background-color: #4682A9;
+    color: #fff;
+    border: 2px solid #F6F4EB;
+    transform: scale(1.1);
 }
 
 file-upload {
@@ -277,4 +290,74 @@ file-upload {
         font-size: larger;
         margin-top: 15px;
     }
+}
+
+.divmenciones {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-menciones {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.lblDate {
+    font-size: larger;
+}
+
+.iptdate {
+    font-size: larger;
+}
+
+
+.menciones {
+    margin-top: 50px;
+    width: 25%;
+    background-color: #fff;
+    border: 1px solid #9b9b9b;
+    text-align: center;
+    max-height: 497px;
+    overflow-y: auto;
+}
+
+.mencion {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid #9b9b9b; */
+    gap: 5px;
+
+    .contador {
+        font-weight: 700;
+        padding-right: 10px;
+        margin-right: 20px;
+        border-right: 1px solid #9b9b9b;
+        font-size: x-large;
+    }
+
+    .usuario {
+        font-size: larger;
+        font-weight: 700;
+    }
+    .mensajes-user {
+        font-size: large;
+    }
+}
+
+.menciones::-webkit-scrollbar {
+    width: 8px;
+    background: #91C8E4;
+    border-radius: 0 0 10px 0;
+}
+
+.menciones::-webkit-scrollbar-thumb {
+    background: #4682A9;
+    border-radius: 0 10px 10px 0;
 }

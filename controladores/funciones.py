@@ -4,6 +4,8 @@ from datetime import datetime
 
 from clases.mensaje import Mensaje
 
+import os
+
 
 class funciones:
     def __init__(self):
@@ -316,7 +318,16 @@ class funciones:
         self.palabras_nega_rechazadas = 0
 
         self.fechas.clear()
+        archivos = ["db_simulada.xml", "resumenConfig.xml", "resumenMensajes.xml"]
+
+        for archivo in archivos:
+            if os.path.exists(archivo):
+                os.remove(archivo)
+
+
         print("Sistema inicializado")
+
+
 
 
     def prettify_xml(self,element, indent='    '):
