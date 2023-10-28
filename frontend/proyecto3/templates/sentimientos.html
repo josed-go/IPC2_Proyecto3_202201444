@@ -2,32 +2,39 @@
 {% load static %}
 {% block content %}
 <h1>Obtener sentimientos</h1>
-<div class="divmenciones">
+<div class="max-container">
 
-    <div class="container-menciones">
-        <div class="container">
-            <div>
-                <form method="POST" id="fileconfigform" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <label class="lblDate">Fecha de inicio:</label>
-                    <input type="date" class="iptdate" id="fechain" name="fechain"/>
-                </form>
+    <div class="divmenciones">
+    
+        <div class="container-menciones">
+            <div class="container">
+                <div>
+                    <form method="POST" id="fileconfigform" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label class="lblDate">Fecha de inicio:</label>
+                        <input type="date" class="iptdate" id="fechain" name="fechain"/>
+                    </form>
+                </div>
+                <div>
+                    <form method="POST" id="fileconfigform" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label class="lblDate">Fecha final:</label>
+                        <input type="date" class="iptdate" id="fechafin" name="fechafin"/>
+                    </form>
+                </div>
             </div>
-            <div>
-                <form method="POST" id="fileconfigform" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <label class="lblDate">Fecha final:</label>
-                    <input type="date" class="iptdate" id="fechafin" name="fechafin"/>
-                </form>
-            </div>
+            <button id="btnsentimientos" class="btnfile">Buscar</button>
         </div>
-        <button id="btnsentimientos" class="btnfile">Buscar</button>
+        <div id="div-menciones">
+        </div>
     </div>
-    <div id="div-menciones">
+    <div id="chart">
+
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     $(document).ready(() => {
         $("#btnsentimientos").click((e) => {
@@ -56,6 +63,8 @@
                 processData: false,
                 contentType: false,
                 success: (response) => {
+                    var sentimientos = []
+                    var datos = []
                     var texto = ""
                     var respuesta = response.respuesta
                     var div = $("#div-menciones")
@@ -67,10 +76,12 @@
                         var tipo = document.createElement("p")
                         tipo.classList.add("usuario")
                         tipo.textContent = key+":"
+                        sentimientos.push(key)
 
                         var mensajes = document.createElement("p")
                         mensajes.classList.add("mensajes-user")
                         mensajes.textContent = respuesta[key] + " mensajes"
+                        datos.push(respuesta[key])
                         // texto = texto + "@" + key + " "+ menciones[key] + "\n"
                         divmencion.append(tipo)
                         divmencion.append(mensajes)
@@ -78,6 +89,20 @@
                     }
                     // alert("Fechain: " + fechain + " | Fechafin: "+fechafin +"\n"+response.menciones)
                     // alert(texto)
+                    ApexCharts.exec('chart1', "updateOptions", {
+                        xaxis: {
+                        categories: sentimientos
+                        },
+                        title: {
+                            text: 'Hashtags '+fechain +" a "+fechafin
+                        }
+                    });
+
+                    ApexCharts.exec('chart1', "updateSeries", [
+                        {
+                        data: datos
+                        }
+                    ]);
                 
                 },
                 error: (xhr, status, error) => {
@@ -87,6 +112,92 @@
 
 
         })
+
+        var options = {
+            series: [{
+                name: 'Mensajes',
+                data: []
+            }],
+            chart: {
+                id: 'chart1',
+                height: 350,
+                type: 'bar',
+            },
+            plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                position: 'top', // top, center, bottom
+                },
+            }
+            },
+            dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return val;
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+            },
+            
+            xaxis: {
+            categories: [],
+            position: 'top',
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false
+            },
+            crosshairs: {
+                fill: {
+                type: 'gradient',
+                gradient: {
+                    colorFrom: '#D8E3F0',
+                    colorTo: '#BED1E6',
+                    stops: [0, 100],
+                    opacityFrom: 0.4,
+                    opacityTo: 0.5,
+                }
+                }
+            },
+            tooltip: {
+                enabled: true,
+            }
+            },
+            yaxis: {
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+                formatter: function (val) {
+                return val;
+                }
+            }
+            
+            },
+            title: {
+            text: 'Sentimientos',
+            floating: true,
+            offsetY: 330,
+            align: 'center',
+            style: {
+                color: '#444'
+            }
+            }
+        };
+
+        
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        
+        chart.render();
 
 
     })
