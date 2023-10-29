@@ -99,42 +99,6 @@
                         div.append(divmencion)
                         cont = cont + 1
                     }
-        //             var options = {
-        //     series: datos,
-        //     chart: {
-        //     width: '100%',
-        //     type: 'pie',
-        //     },
-        //     labels: usuarios,
-        //     theme: {
-        //     monochrome: {
-        //         enabled: true
-        //     }
-        //     },
-        //     plotOptions: {
-        //     pie: {
-        //         dataLabels: {
-        //         offset: -5
-        //         }
-        //     }
-        //     },
-        //     title: {
-        //     text: "Monochrome Pie"
-        //     },
-        //     dataLabels: {
-        //     formatter(val, opts) {
-        //         const name = opts.w.globals.labels[opts.seriesIndex]
-        //         return [name, val.toFixed(1)]
-        //     }
-        //     },
-        //     legend: {
-        //     show: false
-        //     }
-        //     };
-
-        // var chart = new ApexCharts(document.querySelector("#chart"), options);
-        // chart.render();
-
                     
                     ApexCharts.exec('chart1', "updateOptions", {
                         xaxis: {
@@ -152,7 +116,6 @@
                     ]);
                     // alert("Fechain: " + fechain + " | Fechafin: "+fechafin +"\n"+response.menciones)
                     // alert(texto)
-                
                 },
                 error: (xhr, status, error) => {
                     alert("Error: " + error)
@@ -161,6 +124,7 @@
 
 
         })
+
         var options = {
             series: [{
                 name: 'Menciones',
@@ -232,7 +196,7 @@
             
             },
             title: {
-            text: 'Hashtags',
+            text: 'Menciones',
             floating: true,
             offsetY: 330,
             align: 'center',
@@ -241,12 +205,10 @@
             }
             }
         };
-
         
         var chart = new ApexCharts(document.querySelector("#chart"), options);
         
         chart.render();
-        
 
     })
 </script>
