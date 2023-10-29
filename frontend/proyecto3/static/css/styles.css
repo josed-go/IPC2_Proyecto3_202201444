@@ -289,6 +289,16 @@ file-upload {
         cursor: pointer;
         font-size: larger;
         margin-top: 15px;
+        color: #4682a9;
+        text-decoration: underline;
+    }
+
+    .a-link {
+        font-weight: bold;
+        color: #4682a9;
+    }
+    .a-link:hover {
+        color: #34495e;
     }
 }
 
